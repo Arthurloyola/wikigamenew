@@ -47,6 +47,7 @@ dependencies:
   page_indicator: ^0.4.1
   sleek_circular_slider: ^2.0.1
   youtube_player_flutter: ^9.0.1
+  provider: ^6.1.2
 
 
 dev_dependencies:
