@@ -1,16 +1,14 @@
-# wikigamenew
+# WikiGame App
 
-A new Flutter project.
+Descrição: 
 
-## Getting Started
+Componentes: 
+12217021 - Arthur Loyola
+222100003 - Daniel Alves
+223100003 - Renan Costa Bitencourt Da Vitoria
 
-This project is a starting point for a Flutter application.
+Documento de Visão de Software: 
+https://docs.google.com/document/d/1hWlSbV6A4LCisjBKImn3EHkHK37Tkaikq5ehbseYK1E/edit?usp=sharing
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Capturas de tela:
+![image](https://github.com/Arthurloyola/wikigamenew/assets/79482628/715773e5-044a-450b-adf9-3c6407d56123)
