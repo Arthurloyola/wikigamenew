@@ -91,45 +91,45 @@ class _MyScreenState extends State<MainScreen> {
             BottomNavyBarItem(
                 activeColor: Color(0xFF010101),
                 title: Text(
-                  'Discover',
+                  ' Sereach',
                   style:
                       TextStyle(color: Style.Colors.mainColor, fontSize: 13.0),
                 ),
                 icon: Padding(
                   padding: EdgeInsets.only(left: 5.0),
-                  child: Icon(SimpleLineIcons.game_controller,
+                  child: Icon(SimpleLineIcons.magnifier,
                       size: 18.0,
-                      color: _currentIndex == 0
+                      color: _currentIndex == 1
                           ? Style.Colors.mainColor
                           : Colors.white),
                 )),
             BottomNavyBarItem(
                 activeColor: Color(0xFF010101),
                 title: Text(
-                  'Discover',
+                  ' Consoles',
                   style:
                       TextStyle(color: Style.Colors.mainColor, fontSize: 13.0),
                 ),
                 icon: Padding(
                   padding: EdgeInsets.only(left: 5.0),
-                  child: Icon(SimpleLineIcons.game_controller,
+                  child: Icon(SimpleLineIcons.layers,
                       size: 18.0,
-                      color: _currentIndex == 0
+                      color: _currentIndex == 2
                           ? Style.Colors.mainColor
                           : Colors.white),
                 )),
             BottomNavyBarItem(
                 activeColor: Color(0xFF010101),
                 title: Text(
-                  'Discover',
+                  ' Profile',
                   style:
                       TextStyle(color: Style.Colors.mainColor, fontSize: 13.0),
                 ),
                 icon: Padding(
                   padding: EdgeInsets.only(left: 5.0),
-                  child: Icon(SimpleLineIcons.game_controller,
+                  child: Icon(SimpleLineIcons.user,
                       size: 18.0,
-                      color: _currentIndex == 0
+                      color: _currentIndex == 3
                           ? Style.Colors.mainColor
                           : Colors.white),
                 )),
