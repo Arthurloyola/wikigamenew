@@ -76,7 +76,7 @@ class _DiscoverScreenList extends State<DiscoverScreenList> {
                                       BorderRadius.all(Radius.circular(5.0)),
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      "https://images.igdb.com/igdb/image/upload/t_cover_big/${games[index].cover.imageId}.jpg",
+                                      "https://images.igdb.com/igdb/image/upload/t_cover_big/${games[index].cover?.imageId}.jpg",
                                     ),
                                     fit: BoxFit.cover,
                                   ),

@@ -7,7 +7,7 @@ class GameResponse {
   GameResponse(this.games, this.error);
 
   GameResponse.fromJson(List json)
-      : games = json.map((e) => GameModel.fromJson(e)).toList(),
+      : games = json.map((i) => GameModel.fromJson(i)).toList(),
         error = "";
 
   GameResponse.withError(String errorValue)

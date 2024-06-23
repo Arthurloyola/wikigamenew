@@ -7,7 +7,7 @@ class GetSliderBloc {
   final BehaviorSubject<GameResponse> _subject =
       BehaviorSubject<GameResponse>();
 
-  getSlider() async {
+  getSlider(int i) async {
     GameResponse response = await _repository.getSlider();
     _subject.sink.add(response);
   }
