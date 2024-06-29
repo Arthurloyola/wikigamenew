@@ -1,5 +1,9 @@
+// lib/game_detail_screen.dart
 import 'package:flutter/material.dart';
 import 'api_service.dart';
+import 'game_media_screen.dart';
+import 'star_rating.dart';
+import 'star_rating.dart'; // Importe o widget StarRating aqui
 
 class GameDetailScreen extends StatefulWidget {
   final int id;
@@ -31,8 +35,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(
-            color: Colors.white), // Define a cor da seta para branca
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: gameDetails.isEmpty
           ? Center(child: CircularProgressIndicator())
@@ -40,32 +43,44 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  gameDetails['background_image'] != null
-                      ? Image.network(
-                          gameDetails['background_image'],
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: 300,
-                        )
-                      : Container(
-                          color: Colors.grey,
-                          width: double.infinity,
-                          height: 300,
-                        ),
+                  Image.network(
+                    gameDetails['background_image'] ?? '',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 300,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Classificação: ${gameDetails['rating']}',
+                          'Classificação:',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 8.0),
+                        Row(
+                          children: [
+                            StarRating(
+                              rating: gameDetails['rating'] /
+                                  2, // Ajuste para o valor das estrelas (ex: rating de 10 para 5 estrelas)
+                              size: 24.0,
+                              color: Colors.amber,
+                            ),
+                            SizedBox(width: 8.0),
+                            Text(
+                              '${gameDetails['rating']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Text(
@@ -85,6 +100,19 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                             color: Colors.white,
                             fontSize: 16.0,
                           ),
+                        ),
+                        SizedBox(height: 16.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    GameMediaScreen(gameId: widget.id),
+                              ),
+                            );
+                          },
+                          child: Text('Ver Mídia do Jogo'),
                         ),
                       ],
                     ),

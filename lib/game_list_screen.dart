@@ -1,3 +1,4 @@
+// lib/game_list_screen.dart
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'game_detail_screen.dart';
@@ -10,16 +11,54 @@ class GameListScreen extends StatefulWidget {
 class _GameListScreenState extends State<GameListScreen> {
   ApiService apiService = ApiService();
   List games = [];
+  int currentPage = 1;
+  bool isLoading = false;
+  bool isLastPage = false;
+  ScrollController _scrollController = ScrollController();
+  final int maxGames = 50; // Limite de 50 jogos
 
   @override
   void initState() {
     super.initState();
     fetchGames();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          !isLoading &&
+          !isLastPage) {
+        fetchGames();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> fetchGames() async {
-    games = await apiService.fetchGames();
-    setState(() {});
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final newGames = await apiService.fetchGames(page: currentPage);
+      setState(() {
+        games.addAll(newGames);
+        currentPage++;
+        if (newGames.length < 20 || games.length >= maxGames) {
+          isLastPage =
+              true; // Se menos de 20 jogos forem retornados, é a última página
+        }
+      });
+    } catch (e) {
+      // Handle the error
+      print(e);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -29,12 +68,13 @@ class _GameListScreenState extends State<GameListScreen> {
       body: games.isEmpty
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Imagem grande no topo
                   Image.network(
-                    'https://images3.alphacoders.com/136/1363581.png', // Substitua por uma URL válida
+                    'https://images.pexels.com/photos/4836386/pexels-photo-4836386.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // Substitua por uma URL válida
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 200,
@@ -57,8 +97,7 @@ class _GameListScreenState extends State<GameListScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GridView.builder(
-                      physics:
-                          NeverScrollableScrollPhysics(), // Para permitir rolagem no SingleChildScrollView
+                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -66,7 +105,8 @@ class _GameListScreenState extends State<GameListScreen> {
                         mainAxisSpacing: 8.0,
                         childAspectRatio: 0.7,
                       ),
-                      itemCount: games.length,
+                      itemCount:
+                          games.length > maxGames ? maxGames : games.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -110,6 +150,11 @@ class _GameListScreenState extends State<GameListScreen> {
                       },
                     ),
                   ),
+                  if (isLoading)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
                 ],
               ),
             ),
