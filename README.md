@@ -1,4 +1,4 @@
-# WikiGame App
+# WikiGames App
 
 Descrição: 
 
