@@ -15,7 +15,7 @@ class _GameListScreenState extends State<GameListScreen> {
   bool isLoading = false;
   bool isLastPage = false;
   ScrollController _scrollController = ScrollController();
-  final int maxGames = 50; // Limite de 50 jogos
+  final int maxGames = 39;
 
   @override
   void initState() {
