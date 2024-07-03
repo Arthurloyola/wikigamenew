@@ -121,5 +121,5 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               ),
             ),
     );
-  }
+  } //teste commit
 }
