@@ -4,6 +4,8 @@ import 'api_service.dart';
 import 'game_detail_screen.dart';
 
 class GameListScreen extends StatefulWidget {
+  const GameListScreen({super.key});
+
   @override
   _GameListScreenState createState() => _GameListScreenState();
 }
@@ -11,11 +13,13 @@ class GameListScreen extends StatefulWidget {
 class _GameListScreenState extends State<GameListScreen> {
   ApiService apiService = ApiService();
   List games = [];
+  List filteredGames = [];
   int currentPage = 1;
   bool isLoading = false;
   bool isLastPage = false;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final int maxGames = 39;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -29,11 +33,13 @@ class _GameListScreenState extends State<GameListScreen> {
         fetchGames();
       }
     });
+    searchController.addListener(_filterGames);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -45,6 +51,7 @@ class _GameListScreenState extends State<GameListScreen> {
       final newGames = await apiService.fetchGames(page: currentPage);
       setState(() {
         games.addAll(newGames);
+        filteredGames = games;
         currentPage++;
         if (newGames.length < 20 || games.length >= maxGames) {
           isLastPage =
@@ -61,12 +68,22 @@ class _GameListScreenState extends State<GameListScreen> {
     }
   }
 
+  void _filterGames() {
+    setState(() {
+      filteredGames = games
+          .where((game) => game['name']
+              .toLowerCase()
+              .contains(searchController.text.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: games.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               controller: _scrollController,
               child: Column(
@@ -79,10 +96,10 @@ class _GameListScreenState extends State<GameListScreen> {
                     width: double.infinity,
                     height: 200,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   // Título "Biblioteca"
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
                       'Biblioteca',
                       style: TextStyle(
@@ -92,21 +109,41 @@ class _GameListScreenState extends State<GameListScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
+                  Padding( //Realizar pesquisa na propria API?
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Pesquisar jogos...',
+                        hintStyle: const TextStyle(color: Colors.grey),
+                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                        filled: true,
+                        fillColor: Colors.white24,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
                   // Grid de jogos
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 8.0,
                         mainAxisSpacing: 8.0,
                         childAspectRatio: 0.7,
                       ),
-                      itemCount:
-                          games.length > maxGames ? maxGames : games.length,
+                      itemCount: filteredGames.length > maxGames
+                          ? maxGames
+                          : filteredGames.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -114,7 +151,7 @@ class _GameListScreenState extends State<GameListScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    GameDetailScreen(id: games[index]['id']),
+                                    GameDetailScreen(id: filteredGames[index]['id']),
                               ),
                             );
                           },
@@ -123,10 +160,9 @@ class _GameListScreenState extends State<GameListScreen> {
                               Expanded(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  child:
-                                      games[index]['background_image'] != null
+                                  child: filteredGames[index]['background_image'] != null
                                           ? Image.network(
-                                              games[index]['background_image'],
+                                              filteredGames[index]['background_image'],
                                               fit: BoxFit.cover,
                                               width: double.infinity,
                                             )
@@ -136,10 +172,10 @@ class _GameListScreenState extends State<GameListScreen> {
                                             ),
                                 ),
                               ),
-                              SizedBox(height: 8.0),
+                              const SizedBox(height: 8.0),
                               Text(
-                                games[index]['name'],
-                                style: TextStyle(color: Colors.white),
+                                filteredGames[index]['name'],
+                                style: const TextStyle(color: Colors.white),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -151,8 +187,8 @@ class _GameListScreenState extends State<GameListScreen> {
                     ),
                   ),
                   if (isLoading)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Center(child: CircularProgressIndicator()),
                     ),
                 ],

@@ -1,14 +1,14 @@
-// lib/game_detail_screen.dart
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'game_media_screen.dart';
 import 'star_rating.dart';
-import 'star_rating.dart'; // Importe o widget StarRating aqui
 
 class GameDetailScreen extends StatefulWidget {
   final int id;
 
-  GameDetailScreen({required this.id});
+  const GameDetailScreen({super.key, required this.id});
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -28,6 +28,17 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
     gameDetails = await apiService.fetchGameDetails(widget.id);
     setState(() {});
   }
+  
+  String removeEspanhol(String texto) {
+    String input = utf8.decode(texto.runes.toList());
+    const marker = 'Español';
+    int markerIndex = input.indexOf(marker);
+
+    if (markerIndex != -1) {
+      return input.substring(0, markerIndex).trim();
+    }
+    return input;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +46,10 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: gameDetails.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +65,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Classificação:',
                           style: TextStyle(
                             color: Colors.white,
@@ -65,44 +76,49 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         Row(
                           children: [
                             StarRating(
-                              rating: gameDetails['rating'] /
-                                  2, // Ajuste para o valor das estrelas (ex: rating de 10 para 5 estrelas)
+                              rating: gameDetails['rating'] / 2, //Div. por 2 pois API retorna classif. até 10, sendo que só temos 5 estrelas
                               size: 24.0,
                               color: Colors.amber,
                             ),
-                            SizedBox(width: 8.0),
+                            const SizedBox(width: 8.0),
                             Text(
-                              '${gameDetails['rating']}',
-                              style: TextStyle(
+                              '${(gameDetails['rating'] / 2).toStringAsFixed(1)}',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Text(
                             gameDetails['name'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         Text(
-                          gameDetails['description_raw'] ??
-                              'Descrição indisponível',
-                          style: TextStyle(
+                          removeEspanhol(gameDetails['description_raw']),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
                           ),
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white, backgroundColor: const Color.fromARGB(255, 243, 33, 33),
+                            padding: const EdgeInsets.all(16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -112,7 +128,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                               ),
                             );
                           },
-                          child: Text('Ver Mídia do Jogo'),
+                          child: const Text('Ver Mídia do Jogo'),
                         ),
                       ],
                     ),
