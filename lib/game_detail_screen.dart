@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'game_media_screen.dart';
 import 'star_rating.dart';
-import 'star_rating.dart'; // Importe o widget StarRating aqui
 
 class GameDetailScreen extends StatefulWidget {
   final int id;
 
-  GameDetailScreen({required this.id});
+  const GameDetailScreen({super.key, required this.id});
 
   @override
   _GameDetailScreenState createState() => _GameDetailScreenState();
@@ -35,10 +34,10 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: gameDetails.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +53,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Classificação:',
                           style: TextStyle(
                             color: Colors.white,
@@ -70,38 +69,38 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                               size: 24.0,
                               color: Colors.amber,
                             ),
-                            SizedBox(width: 8.0),
+                            const SizedBox(width: 8.0),
                             Text(
                               '${gameDetails['rating']}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Text(
                             gameDetails['name'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         Text(
                           gameDetails['description_raw'] ??
                               'Descrição indisponível',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
                           ),
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -112,7 +111,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                               ),
                             );
                           },
-                          child: Text('Ver Mídia do Jogo'),
+                          child: const Text('Ver Mídia do Jogo'),
                         ),
                       ],
                     ),

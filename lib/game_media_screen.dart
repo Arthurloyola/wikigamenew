@@ -6,7 +6,7 @@ import 'api_service.dart';
 class GameMediaScreen extends StatefulWidget {
   final int gameId;
 
-  GameMediaScreen({required this.gameId});
+  const GameMediaScreen({super.key, required this.gameId});
 
   @override
   _GameMediaScreenState createState() => _GameMediaScreenState();
@@ -35,16 +35,16 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Mídia do Jogo', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Mídia do Jogo', style: TextStyle(color: Colors.white)),
       ),
       body: screenshots.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                SizedBox(height: 16.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                const SizedBox(height: 16.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
                     'Screenshots',
                     style: TextStyle(
@@ -54,7 +54,7 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Expanded(
                   child: CarouselSlider(
                     options: CarouselOptions(
