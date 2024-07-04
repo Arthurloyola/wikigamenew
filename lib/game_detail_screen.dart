@@ -64,14 +64,13 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         Row(
                           children: [
                             StarRating(
-                              rating: gameDetails['rating'] /
-                                  2, // Ajuste para o valor das estrelas (ex: rating de 10 para 5 estrelas)
+                              rating: gameDetails['rating'] / 2, //Div. por 2 pois API retorna classif. até 10, sendo que só temos 5 estrelas
                               size: 24.0,
                               color: Colors.amber,
                             ),
                             const SizedBox(width: 8.0),
                             Text(
-                              '${gameDetails['rating']}',
+                              '${(gameDetails['rating'] / 2).toStringAsFixed(1)}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
