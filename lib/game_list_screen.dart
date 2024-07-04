@@ -11,11 +11,13 @@ class GameListScreen extends StatefulWidget {
 class _GameListScreenState extends State<GameListScreen> {
   ApiService apiService = ApiService();
   List games = [];
+  List filteredGames = [];
   int currentPage = 1;
   bool isLoading = false;
   bool isLastPage = false;
   ScrollController _scrollController = ScrollController();
   final int maxGames = 39;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -29,11 +31,13 @@ class _GameListScreenState extends State<GameListScreen> {
         fetchGames();
       }
     });
+    searchController.addListener(_filterGames);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
@@ -45,6 +49,7 @@ class _GameListScreenState extends State<GameListScreen> {
       final newGames = await apiService.fetchGames(page: currentPage);
       setState(() {
         games.addAll(newGames);
+        filteredGames = games;
         currentPage++;
         if (newGames.length < 20 || games.length >= maxGames) {
           isLastPage =
@@ -59,6 +64,16 @@ class _GameListScreenState extends State<GameListScreen> {
         isLoading = false;
       });
     }
+  }
+
+  void _filterGames() {
+    setState(() {
+      filteredGames = games
+          .where((game) => game['name']
+              .toLowerCase()
+              .contains(searchController.text.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -93,6 +108,25 @@ class _GameListScreenState extends State<GameListScreen> {
                     ),
                   ),
                   SizedBox(height: 16.0),
+                  Padding( //Realizar pesquisa na propria API?
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Pesquisar jogos...',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        prefixIcon: Icon(Icons.search, color: Colors.grey),
+                        filled: true,
+                        fillColor: Colors.white24,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
                   // Grid de jogos
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -105,8 +139,9 @@ class _GameListScreenState extends State<GameListScreen> {
                         mainAxisSpacing: 8.0,
                         childAspectRatio: 0.7,
                       ),
-                      itemCount:
-                          games.length > maxGames ? maxGames : games.length,
+                      itemCount: filteredGames.length > maxGames
+                          ? maxGames
+                          : filteredGames.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -114,7 +149,7 @@ class _GameListScreenState extends State<GameListScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    GameDetailScreen(id: games[index]['id']),
+                                    GameDetailScreen(id: filteredGames[index]['id']),
                               ),
                             );
                           },
@@ -123,10 +158,9 @@ class _GameListScreenState extends State<GameListScreen> {
                               Expanded(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  child:
-                                      games[index]['background_image'] != null
+                                  child: filteredGames[index]['background_image'] != null
                                           ? Image.network(
-                                              games[index]['background_image'],
+                                              filteredGames[index]['background_image'],
                                               fit: BoxFit.cover,
                                               width: double.infinity,
                                             )
@@ -138,7 +172,7 @@ class _GameListScreenState extends State<GameListScreen> {
                               ),
                               SizedBox(height: 8.0),
                               Text(
-                                games[index]['name'],
+                                filteredGames[index]['name'],
                                 style: TextStyle(color: Colors.white),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
