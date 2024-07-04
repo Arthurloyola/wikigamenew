@@ -1,4 +1,3 @@
-// lib/game_detail_screen.dart
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -113,6 +112,13 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         ),
                         const SizedBox(height: 16.0),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white, backgroundColor: const Color.fromARGB(255, 243, 33, 33),
+                            padding: const EdgeInsets.all(16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
