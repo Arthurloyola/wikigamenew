@@ -4,6 +4,8 @@ import 'api_service.dart';
 import 'game_detail_screen.dart';
 
 class GameListScreen extends StatefulWidget {
+  const GameListScreen({super.key});
+
   @override
   _GameListScreenState createState() => _GameListScreenState();
 }
@@ -15,7 +17,7 @@ class _GameListScreenState extends State<GameListScreen> {
   int currentPage = 1;
   bool isLoading = false;
   bool isLastPage = false;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final int maxGames = 39;
   TextEditingController searchController = TextEditingController();
 
@@ -81,7 +83,7 @@ class _GameListScreenState extends State<GameListScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: games.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               controller: _scrollController,
               child: Column(
@@ -94,10 +96,10 @@ class _GameListScreenState extends State<GameListScreen> {
                     width: double.infinity,
                     height: 200,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   // Título "Biblioteca"
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
                       'Biblioteca',
                       style: TextStyle(
@@ -107,15 +109,15 @@ class _GameListScreenState extends State<GameListScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   Padding( //Realizar pesquisa na propria API?
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: TextField(
                       controller: searchController,
                       decoration: InputDecoration(
                         hintText: 'Pesquisar jogos...',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(Icons.search, color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
+                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
                         filled: true,
                         fillColor: Colors.white24,
                         border: OutlineInputBorder(
@@ -123,17 +125,17 @@ class _GameListScreenState extends State<GameListScreen> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   // Grid de jogos
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 8.0,
                         mainAxisSpacing: 8.0,
@@ -170,10 +172,10 @@ class _GameListScreenState extends State<GameListScreen> {
                                             ),
                                 ),
                               ),
-                              SizedBox(height: 8.0),
+                              const SizedBox(height: 8.0),
                               Text(
                                 filteredGames[index]['name'],
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -185,8 +187,8 @@ class _GameListScreenState extends State<GameListScreen> {
                     ),
                   ),
                   if (isLoading)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Center(child: CircularProgressIndicator()),
                     ),
                 ],
