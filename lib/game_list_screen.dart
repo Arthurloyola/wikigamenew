@@ -91,7 +91,7 @@ class _GameListScreenState extends State<GameListScreen> {
                 children: [
                   // Imagem grande no topo
                   Image.network(
-                    'https://images.pexels.com/photos/4836386/pexels-photo-4836386.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // Substitua por uma URL válida
+                    'https://scontent.fvix18-1.fna.fbcdn.net/v/t39.30808-6/450034672_3349800541983233_8155286765430107067_n.jpg?stp=dst-jpg_p180x540&_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=a6Fjh6qy0G0Q7kNvgF9ycK6&_nc_ht=scontent.fvix18-1.fna&oh=00_AYDseUD97XSAJYeb-bURdlGJBvJv9KSDKg6tJx9yGAUwzw&oe=668CF49E', // Substitua por uma URL válida
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 200,
@@ -110,14 +110,16 @@ class _GameListScreenState extends State<GameListScreen> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  Padding( //Realizar pesquisa na propria API?
+                  Padding(
+                    //Realizar pesquisa na propria API?
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: TextField(
                       controller: searchController,
                       decoration: InputDecoration(
                         hintText: 'Pesquisar jogos...',
                         hintStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                        prefixIcon:
+                            const Icon(Icons.search, color: Colors.grey),
                         filled: true,
                         fillColor: Colors.white24,
                         border: OutlineInputBorder(
@@ -135,7 +137,8 @@ class _GameListScreenState extends State<GameListScreen> {
                     child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 8.0,
                         mainAxisSpacing: 8.0,
@@ -150,8 +153,8 @@ class _GameListScreenState extends State<GameListScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    GameDetailScreen(id: filteredGames[index]['id']),
+                                builder: (context) => GameDetailScreen(
+                                    id: filteredGames[index]['id']),
                               ),
                             );
                           },
@@ -160,16 +163,19 @@ class _GameListScreenState extends State<GameListScreen> {
                               Expanded(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  child: filteredGames[index]['background_image'] != null
-                                          ? Image.network(
-                                              filteredGames[index]['background_image'],
-                                              fit: BoxFit.cover,
-                                              width: double.infinity,
-                                            )
-                                          : Container(
-                                              color: Colors.grey,
-                                              width: double.infinity,
-                                            ),
+                                  child: filteredGames[index]
+                                              ['background_image'] !=
+                                          null
+                                      ? Image.network(
+                                          filteredGames[index]
+                                              ['background_image'],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        )
+                                      : Container(
+                                          color: Colors.grey,
+                                          width: double.infinity,
+                                        ),
                                 ),
                               ),
                               const SizedBox(height: 8.0),
