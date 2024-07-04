@@ -1,4 +1,6 @@
 // lib/game_detail_screen.dart
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'game_media_screen.dart';
@@ -26,6 +28,17 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
   Future<void> fetchGameDetails() async {
     gameDetails = await apiService.fetchGameDetails(widget.id);
     setState(() {});
+  }
+  
+  String removeEspanhol(String texto) {
+    String input = utf8.decode(texto.runes.toList());
+    const marker = 'Español';
+    int markerIndex = input.indexOf(marker);
+
+    if (markerIndex != -1) {
+      return input.substring(0, markerIndex).trim();
+    }
+    return input;
   }
 
   @override
@@ -92,8 +105,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         ),
                         const SizedBox(height: 16.0),
                         Text(
-                          gameDetails['description_raw'] ??
-                              'Descrição indisponível',
+                          removeEspanhol(gameDetails['description_raw']),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
