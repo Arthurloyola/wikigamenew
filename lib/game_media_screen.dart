@@ -1,4 +1,3 @@
-// lib/game_media_screen.dart
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'api_service.dart';
@@ -6,7 +5,7 @@ import 'api_service.dart';
 class GameMediaScreen extends StatefulWidget {
   final int gameId;
 
-  const GameMediaScreen({super.key, required this.gameId});
+  const GameMediaScreen({Key? key, required this.gameId}) : super(key: key);
 
   @override
   _GameMediaScreenState createState() => _GameMediaScreenState();
@@ -36,27 +35,26 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text('Mídia do Jogo', style: TextStyle(color: Colors.white)),
+        title:
+            const Text('Mídia do Jogo', style: TextStyle(color: Colors.white)),
       ),
-      body: screenshots.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                const SizedBox(height: 16.0),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Screenshots',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                Expanded(
-                  child: CarouselSlider(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 300,
+            child: Image.network(
+              screenshots.isNotEmpty
+                  ? screenshots.first['image']
+                  : '', // Usando a primeira imagem como principal
+              fit: BoxFit.cover,
+            ),
+          ),
+          Expanded(
+            child: screenshots.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : CarouselSlider(
                     options: CarouselOptions(
                       height: 400.0,
                       enlargeCenterPage: true,
@@ -74,9 +72,9 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
                       );
                     }).toList(),
                   ),
-                ),
-              ],
-            ),
+          ),
+        ],
+      ),
     );
   }
 }
