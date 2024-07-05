@@ -55,11 +55,14 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (backgroundImage != null)
-                    Image.network(
-                      backgroundImage!,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 300,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: Image.network(
+                        backgroundImage!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 300,
+                      ),
                     ),
                   if (gameTitle != null)
                     Padding(
@@ -98,9 +101,12 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
                       items: screenshots.map((screenshot) {
                         return Builder(
                           builder: (BuildContext context) {
-                            return Image.network(
-                              screenshot['image'],
-                              fit: BoxFit.cover,
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(16.0),
+                              child: Image.network(
+                                screenshot['image'],
+                                fit: BoxFit.cover,
+                              ),
                             );
                           },
                         );
