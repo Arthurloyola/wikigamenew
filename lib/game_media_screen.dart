@@ -1,3 +1,4 @@
+// lib/game_media_screen.dart
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'api_service.dart';
@@ -5,7 +6,7 @@ import 'api_service.dart';
 class GameMediaScreen extends StatefulWidget {
   final int gameId;
 
-  const GameMediaScreen({Key? key, required this.gameId}) : super(key: key);
+  const GameMediaScreen({super.key, required this.gameId});
 
   @override
   _GameMediaScreenState createState() => _GameMediaScreenState();
@@ -14,6 +15,8 @@ class GameMediaScreen extends StatefulWidget {
 class _GameMediaScreenState extends State<GameMediaScreen> {
   ApiService apiService = ApiService();
   List screenshots = [];
+  String? backgroundImage;
+  String? gameTitle;
 
   @override
   void initState() {
@@ -23,8 +26,15 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
 
   Future<void> fetchGameMedia() async {
     final media = await apiService.fetchGameMedia(widget.gameId);
+    final gameDetails = await apiService.fetchGameDetails(widget.gameId);
     setState(() {
       screenshots = media['results'];
+      // Pegar a primeira imagem como imagem de fundo principal
+      if (screenshots.isNotEmpty) {
+        backgroundImage = screenshots[0]['image'];
+        screenshots.removeAt(0); // Remove a primeira imagem do carrossel
+      }
+      gameTitle = gameDetails['name'];
     });
   }
 
@@ -38,43 +48,68 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
         title:
             const Text('Mídia do Jogo', style: TextStyle(color: Colors.white)),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 300,
-            child: Image.network(
-              screenshots.isNotEmpty
-                  ? screenshots.first['image']
-                  : '', // Usando a primeira imagem como principal
-              fit: BoxFit.cover,
-            ),
-          ),
-          Expanded(
-            child: screenshots.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : CarouselSlider(
-                    options: CarouselOptions(
-                      height: 400.0,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                      autoPlay: true,
+      body: screenshots.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (backgroundImage != null)
+                    Image.network(
+                      backgroundImage!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 300,
                     ),
-                    items: screenshots.map((screenshot) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Image.network(
-                            screenshot['image'],
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      );
-                    }).toList(),
+                  if (gameTitle != null)
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        gameTitle!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 16.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Screenshots',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-          ),
-        ],
-      ),
+                  const SizedBox(height: 16.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        height: 400.0,
+                        enlargeCenterPage: true,
+                        enableInfiniteScroll: false,
+                        autoPlay: true,
+                      ),
+                      items: screenshots.map((screenshot) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Image.network(
+                              screenshot['image'],
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }
