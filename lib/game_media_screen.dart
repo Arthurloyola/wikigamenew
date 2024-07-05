@@ -55,14 +55,11 @@ class _GameMediaScreenState extends State<GameMediaScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (backgroundImage != null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: Image.network(
-                        backgroundImage!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 300,
-                      ),
+                    Image.network(
+                      backgroundImage!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 300,
                     ),
                   if (gameTitle != null)
                     Padding(
