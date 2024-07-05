@@ -76,13 +76,13 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         Row(
                           children: [
                             StarRating(
-                              rating: gameDetails['rating'] / 2, //Div. por 2 pois API retorna classif. até 10, sendo que só temos 5 estrelas
+                              rating: gameDetails['rating'],
                               size: 24.0,
                               color: Colors.amber,
                             ),
                             const SizedBox(width: 8.0),
                             Text(
-                              '${(gameDetails['rating'] / 2).toStringAsFixed(1)}',
+                              '${(gameDetails['rating']).toStringAsFixed(1)}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
@@ -113,7 +113,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                         const SizedBox(height: 16.0),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, backgroundColor: const Color.fromARGB(255, 243, 33, 33),
+                            foregroundColor: Colors.white, backgroundColor: const Color.fromARGB(255, 45, 0, 71),
                             padding: const EdgeInsets.all(16.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
