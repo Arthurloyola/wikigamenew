@@ -1,4 +1,5 @@
 // lib/api_service.dart
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -24,6 +25,12 @@ class ApiService {
     } else {
       throw Exception('Falha ao carregar detalhes do jogo');
     }
+  }
+  Future<Map<String, dynamic>> fetchGameDescription(int id) async {
+    final String response = await rootBundle.loadString('assets/games.json');
+    final List<dynamic> data = json.decode(response);
+
+    return data.firstWhere((game) => game['id'] == id);
   }
 
   Future<Map<String, dynamic>> fetchGameMedia(int id) async {

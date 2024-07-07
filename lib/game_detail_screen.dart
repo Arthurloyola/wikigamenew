@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'game_media_screen.dart';
@@ -17,6 +15,8 @@ class GameDetailScreen extends StatefulWidget {
 class _GameDetailScreenState extends State<GameDetailScreen> {
   ApiService apiService = ApiService();
   Map<String, dynamic> gameDetails = {};
+  Map<String, dynamic> gameDescription = {};
+  bool isEnglish = true; 
 
   @override
   void initState() {
@@ -26,19 +26,11 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
   Future<void> fetchGameDetails() async {
     gameDetails = await apiService.fetchGameDetails(widget.id);
+    gameDescription = await apiService.fetchGameDescription(widget.id);
     setState(() {});
   }
-  
-  String removeEspanhol(String texto) {
-    String input = utf8.decode(texto.runes.toList());
-    const marker = 'Español';
-    int markerIndex = input.indexOf(marker);
 
-    if (markerIndex != -1) {
-      return input.substring(0, markerIndex).trim();
-    }
-    return input;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +95,33 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
                           ),
                         ),
                         const SizedBox(height: 16.0),
+                        ToggleButtons(
+                          isSelected: [isEnglish, !isEnglish],
+                          onPressed: (int index) {
+                            setState(() {
+                              isEnglish = index == 0;
+                            });
+                          },
+                          color: Colors.white,
+                          selectedColor: Colors.amber,
+                          fillColor: Colors.black,
+                          borderColor: Colors.amber,
+                          selectedBorderColor: Colors.amber,
+                          borderRadius: BorderRadius.circular(8.0),
+                          children: const <Widget>[
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text('EN', style: TextStyle(color: Colors.white)),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text('PT', style: TextStyle(color: Colors.white)),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16.0),
                         Text(
-                          removeEspanhol(gameDetails['description_raw']),
+                          isEnglish ? gameDescription['description'] : gameDescription['traducao'],
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
@@ -137,5 +154,5 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
               ),
             ),
     );
-  } //teste commit
+  }
 }
