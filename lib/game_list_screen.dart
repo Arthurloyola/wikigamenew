@@ -91,7 +91,7 @@ class _GameListScreenState extends State<GameListScreen> {
                 children: [
                   // Imagem grande no topo
                   Image.network(
-                    'https://scontent.fvix18-1.fna.fbcdn.net/v/t39.30808-6/450034672_3349800541983233_8155286765430107067_n.jpg?stp=dst-jpg_p180x540&_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=a6Fjh6qy0G0Q7kNvgF9ycK6&_nc_ht=scontent.fvix18-1.fna&oh=00_AYDseUD97XSAJYeb-bURdlGJBvJv9KSDKg6tJx9yGAUwzw&oe=668CF49E', // Substitua por uma URL válida
+                    'https://scontent-gig4-2.xx.fbcdn.net/v/t39.30808-6/450332502_3352243118405642_165983867684789867_n.jpg?stp=dst-jpg_p180x540&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=hRRJTWy703cQ7kNvgG-9yd8&_nc_ht=scontent-gig4-2.xx&oh=00_AYCisxow4GJcNwp0yo_GnPEl5Z92m8GIUDEX6rGFy00dyg&oe=6691D4AD', // Substitua por uma URL válida
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 200,
